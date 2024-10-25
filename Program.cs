@@ -1,6 +1,4 @@
-﻿using System.IO;
-using System.Runtime;
-using System.Text;
+﻿using System.Text;
 
 class Program
 {
