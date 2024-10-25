@@ -1,4 +1,5 @@
-﻿using System.Runtime;
+﻿using System.IO;
+using System.Runtime;
 using System.Text;
 
 class Program
@@ -12,33 +13,33 @@ class Program
         private int chickenCount = 0;
         private int cowCount = 0;
 
-        private int chickenCost = 15;
-        private int cowCost = 65;
+        private int chickenCost = 15; // Стоимость покупки курочки
+        private int cowCost = 65; // Стоимость покупки коровки
 
-        private int eggSupply = 0;
-        private int milkSupply = 0;
+        private int eggSupply = 0; // Общий запас яйц
+        private int milkSupply = 0; // общий запас молока
 
-        private int feedSupply = 10; // Запас корма
+        private int feedSupply = 10; // Общий запас корма
         private int feedCost = 10; // Стоимость покупки
         private int feedBuyPart = 10; // Сколько покупаем за раз
 
-        private int eggCost = 1;
-        private int milkCost = 3;
+        private int eggCost = 1; // Стоимость продажи яиц
+        private int milkCost = 3; // Стоимость продажи молока
 
         private int day = 1;
 
-        public void BuyFeed(out string message)
+        private void BuyFeed(out string message)
         {
             if (money >= feedCost)
             {
                 money -= feedCost;
                 feedSupply += feedBuyPart;
-                message = "Куплено 10 ед. корма";
+                message = $"Куплено {feedBuyPart} ед. корма";
             }
-            else message = "Не достаточно денег для покупки корма";
+            else message = "Недостаточно денег для покупки корма";
         }
 
-        public void BuyChicken(out string message)
+        private void BuyChicken(out string message)
         {
             if (money >= chickenCost)
             {
@@ -51,10 +52,10 @@ class Program
                 }
                 else message = "На вашей ферме нет мест для новых курочек";
             }
-            else message = "Не достаточно денег";
+            else message = "Недостаточно денег";
         }
 
-        public void BuyCow(out string message)
+        private void BuyCow(out string message)
         {
             if (money >= cowCost)
             {
@@ -67,16 +68,16 @@ class Program
                 }
                 else message = "На вашей ферме нет места для новых коровок";
             }
-            else message = "Не достаточно денег";
+            else message = "Недостаточно денег";
         }
 
-        public void FeedupChickens(out string message)
+        private void FeedupChickens(out string message)
         {
             for (int i = 0; i < chickenCount; i++)
             {
                 if (chikens[i].IsAlive() && feedSupply > 0)
                 {
-                    chikens[i].Feedup(1);
+                    chikens[i].Feedup();
                     feedSupply--;
                 }
                 else
@@ -88,13 +89,13 @@ class Program
             message = "Все курочки накормлены";
         }
 
-        public void FeedupCows(out string message)
+        private void FeedupCows(out string message)
         {
             for (int i = 0; i < cowCount; i++)
             {
                 if (cows[i].IsAlive() && feedSupply > 0)
                 {
-                    cows[i].Feedup(1);
+                    cows[i].Feedup();
                     feedSupply--;
                 }
                 else
@@ -106,7 +107,7 @@ class Program
             message = "Все коровки накормлены";
         }
 
-        public void FeedupAll(out string message)
+        private void FeedupAll(out string message)
         {
             StringBuilder bs = new StringBuilder();
 
@@ -118,7 +119,7 @@ class Program
             message = bs.ToString();
         }
 
-        public void Harvest(out string message) // Собираем урожай
+        private void Harvest(out string message) // Собираем урожай
         {
             int eggCount = 0; int milkCount = 0;
             for (int i = 0; i < chickenCount; i++)
@@ -140,7 +141,7 @@ class Program
             milkSupply += milkCount;
         }
 
-        public void SellHarvest(out string message)
+        private void SellHarvest(out string message)
         {
             message = $"Продан урожай на {eggCost * eggSupply + milkCost * milkSupply} монет";
             money += eggCost * eggSupply;
@@ -149,14 +150,16 @@ class Program
             milkSupply = 0;
         }
 
-        public void NewDay()
+        private void NewDay()
         {
+            day++;
             for (int i = 0; i < chickenCount; i++) chikens[i].NewDay();
             for (int i = 0; i < cowCount; i++) cows[i].NewDay();
         }
 
-        public void ShowStatusFarm()
+        private void ShowStatusFarm()
         {
+            Console.WriteLine($"День: {day}");
             Console.WriteLine($"Денег: {money}");
             Console.WriteLine($"Запас корма: {feedSupply}");
             Console.WriteLine($"Собрано яиц: {eggSupply}");
@@ -229,21 +232,18 @@ class Program
     }
     class Chicken
     {
-
         private HungerLevel _hunger = HungerLevel.Feedup;
         private bool _isAlive = true;
         private int _amountEggs = 0;
         private int maxEgg = 10;
 
-
         public bool IsAlive()
         {
             return _isAlive;
         }
-        public void Feedup(int count)
+        public void Feedup()
         {
-            if (!_isAlive) return;
-            if (count > 0) _hunger = HungerLevel.Feedup;
+            _hunger = HungerLevel.Feedup;
         }
 
         public void NewDay()
@@ -307,10 +307,9 @@ class Program
             return _isAlive;
         }
 
-        public void Feedup(int count)
+        public void Feedup()
         {
-            if (!_isAlive) return;
-            if (count > 0) _hunger = HungerLevel.Feedup;
+           _hunger = HungerLevel.Feedup;
         }
 
         public void NewDay()
@@ -354,12 +353,9 @@ class Program
         StrongHunger
     }
 
-
-
     static void Main(string[] args)
     {
         Farm farm = new Farm();
         farm.ShowMenu();
-
     }
 }
