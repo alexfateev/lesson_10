@@ -42,7 +42,6 @@ class Farm
             {
                 money -= chickenCost;
                 chikens.Add(new Chicken());
-
                 message = "Куплена новая курочка";
             }
             else message = "На вашей ферме нет мест для новых курочек";
@@ -82,7 +81,6 @@ class Farm
             }
             message = "Все курочки накормлены";
         }
-
     }
 
     private void FeedupCows(out string message)
@@ -121,17 +119,12 @@ class Farm
         int eggCount = 0; int milkCount = 0;
         foreach (Chicken chicken in chikens)
         {
-            if (chicken.IsAlive)
-            {
-                eggCount += chicken.CollectEggs();
-            }
+            if (chicken.IsAlive) eggCount += chicken.CollectEggs();
+
         }
         foreach (Cow cow in cows)
         {
-            if (cow.IsAlive)
-            {
-                milkCount += cow.CollectMilk();
-            }
+            if (cow.IsAlive) milkCount += cow.CollectMilk();
         }
         message = $"Собрано яиц: {eggCount} \t Собрано молока: {milkCount}";
         eggSupply += eggCount;
@@ -140,10 +133,10 @@ class Farm
 
     private void SellHarvest(out string message)
     {
-        message = $"Продан урожай на {eggCost * eggSupply + milkCost * milkSupply} монет";
-        money += eggCost * eggSupply;
+        int sold = eggCost * eggSupply + milkCost * milkSupply;
+        message = $"Продан урожай на {sold} монет";
+        money += sold;
         eggSupply = 0;
-        money += milkCost * milkSupply;
         milkSupply = 0;
     }
 
