@@ -70,7 +70,7 @@ class Farm
         message = "Нет курочек которых можно покормить";
         foreach (Chicken chicken in chikens)
         {
-            if (chicken.IsAlive() && feedSupply > 0)
+            if (chicken.IsAlive && feedSupply > 0)
             {
                 chicken.Feedup();
                 feedSupply--;
@@ -90,7 +90,7 @@ class Farm
         message = "Нет коровок которых можно покормить";
         foreach (Cow cow in cows)
         {
-            if (cow.IsAlive() && feedSupply > 0)
+            if (cow.IsAlive && feedSupply > 0)
             {
                 cow.Feedup();
                 feedSupply--;
@@ -121,14 +121,14 @@ class Farm
         int eggCount = 0; int milkCount = 0;
         foreach (Chicken chicken in chikens)
         {
-            if (chicken.IsAlive())
+            if (chicken.IsAlive)
             {
                 eggCount += chicken.CollectEggs();
             }
         }
         foreach (Cow cow in cows)
         {
-            if (cow.IsAlive())
+            if (cow.IsAlive)
             {
                 milkCount += cow.CollectMilk();
             }

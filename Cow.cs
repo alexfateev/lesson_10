@@ -3,13 +3,14 @@
 class Cow
 {
     private HungerLevel _hunger = HungerLevel.Feedup;
-    private bool _isAlive = true;
+    //private bool _isAlive = true;
     private int _amountMilk = 0;
+    public bool IsAlive = true;
 
-    public bool IsAlive()
-    {
-        return _isAlive;
-    }
+    //public bool IsAlive()
+    //{
+    //    return _isAlive;
+    //}
 
     public void Feedup()
     {
@@ -24,9 +25,9 @@ class Cow
             case HungerLevel.Feedup: _hunger = HungerLevel.LightHunger; break;
             case HungerLevel.LightHunger: _hunger = HungerLevel.MiddleHunger; break;
             case HungerLevel.MiddleHunger: _hunger = HungerLevel.StrongHunger; break;
-            case HungerLevel.StrongHunger: _isAlive = false; break;
+            case HungerLevel.StrongHunger:IsAlive = false; break;
         }
-        isDead = !_isAlive;
+        isDead = !IsAlive;
     }
 
     private int GetMilk()

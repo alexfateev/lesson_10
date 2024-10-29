@@ -3,14 +3,15 @@
 class Chicken
 {
     private HungerLevel _hunger = HungerLevel.Feedup;
-    private bool _isAlive = true;
+    //private bool _isAlive = true;
     private int _amountEggs = 0;
-    private int maxEgg = 10;
+    private const int maxEgg = 10;
+    public bool IsAlive = true;
 
-    public bool IsAlive()
-    {
-        return _isAlive;
-    }
+    //public bool IsAlive()
+    //{
+    //    return _isAlive;
+    //}
     public void Feedup()
     {
         _hunger = HungerLevel.Feedup;
@@ -24,9 +25,9 @@ class Chicken
             case HungerLevel.Feedup: _hunger = HungerLevel.LightHunger; break;
             case HungerLevel.LightHunger: _hunger = HungerLevel.MiddleHunger; break;
             case HungerLevel.MiddleHunger: _hunger = HungerLevel.StrongHunger; break;
-            case HungerLevel.StrongHunger: _isAlive = false; break;
+            case HungerLevel.StrongHunger: IsAlive = false; break;
         }
-        isDead = !_isAlive;
+        isDead = !IsAlive;
     }
 
     public int CollectEggs()
