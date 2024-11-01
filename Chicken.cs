@@ -3,15 +3,10 @@
 class Chicken
 {
     private HungerLevel _hunger = HungerLevel.Feedup;
-    //private bool _isAlive = true;
     private int _amountEggs = 0;
     private const int maxEgg = 10;
-    public bool IsAlive = true;
+    public bool IsAlive { get; private set; } = true;
 
-    //public bool IsAlive()
-    //{
-    //    return _isAlive;
-    //}
     public void Feedup()
     {
         _hunger = HungerLevel.Feedup;

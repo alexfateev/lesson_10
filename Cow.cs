@@ -3,14 +3,8 @@
 class Cow
 {
     private HungerLevel _hunger = HungerLevel.Feedup;
-    //private bool _isAlive = true;
     private int _amountMilk = 0;
-    public bool IsAlive = true;
-
-    //public bool IsAlive()
-    //{
-    //    return _isAlive;
-    //}
+    public bool IsAlive { get; private set; } = true;
 
     public void Feedup()
     {
