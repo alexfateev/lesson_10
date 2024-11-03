@@ -1,9 +1,9 @@
 ﻿using System.Text;
-
+using lesson_10;
 class Farm
 {
-    private List<Chicken> chikens = new List<Chicken>();
-    private List<Cow> cows = new List<Cow>();
+    private List<Animal> chikens = new List<Animal>();
+    private List<Animal> cows = new List<Animal>();
     private int maxChickens = 50;
     private int maxCows = 20;
     private int money = 100;

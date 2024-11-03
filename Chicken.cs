@@ -1,5 +1,4 @@
 ﻿using lesson_10;
-using pack1;
 
 class Chicken : Animal
 {
