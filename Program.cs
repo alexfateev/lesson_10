@@ -1,12 +1,5 @@
 ﻿namespace pack1;
 
-enum HungerLevel
-{
-    Feedup,
-    LightHunger,
-    MiddleHunger,
-    StrongHunger
-}
 
 class Program
 {

@@ -1,27 +1,14 @@
-﻿using pack1;
+﻿using lesson_10;
+using pack1;
 
-class Cow
+class Cow : Animal
 {
-    private HungerLevel _hunger = HungerLevel.Feedup;
     private int _amountMilk = 0;
-    public bool IsAlive { get; private set; } = true;
 
-    public void Feedup()
-    {
-        _hunger = HungerLevel.Feedup;
-    }
-
-    public void NewDay(out bool isDead)
+    public override void NewDay(out bool isDead)
     {
         _amountMilk = GetMilk();
-        switch (_hunger)
-        {
-            case HungerLevel.Feedup: _hunger = HungerLevel.LightHunger; break;
-            case HungerLevel.LightHunger: _hunger = HungerLevel.MiddleHunger; break;
-            case HungerLevel.MiddleHunger: _hunger = HungerLevel.StrongHunger; break;
-            case HungerLevel.StrongHunger:IsAlive = false; break;
-        }
-        isDead = !IsAlive;
+        base.NewDay(out isDead);
     }
 
     private int GetMilk()
@@ -35,7 +22,6 @@ class Cow
         }
         return 0;
     }
-
 
     public int CollectMilk()
     {
