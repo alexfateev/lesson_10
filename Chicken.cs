@@ -2,19 +2,9 @@
 
 class Chicken : Animal
 {
-    
-    private int _amountEggs = 0;
-
-    public int CollectEggs()
-    {
-        var res = _amountEggs;
-        _amountEggs = 0;
-        return res;
-    }
-
     public override void NewDay(out bool isDead)
     {
-        _amountEggs = GetEgg();
+        _amount = GetEgg();
         base.NewDay(out isDead);
     }
 

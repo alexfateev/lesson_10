@@ -119,12 +119,12 @@ class Farm
         int eggCount = 0; int milkCount = 0;
         foreach (Chicken chicken in chikens)
         {
-            if (chicken.IsAlive) eggCount += chicken.CollectEggs();
+            if (chicken.IsAlive) eggCount += chicken.CollectHarvest();
 
         }
         foreach (Cow cow in cows)
         {
-            if (cow.IsAlive) milkCount += cow.CollectMilk();
+            if (cow.IsAlive) milkCount += cow.CollectHarvest();
         }
         message = $"Собрано яиц: {eggCount} \t Собрано молока: {milkCount}";
         eggSupply += eggCount;

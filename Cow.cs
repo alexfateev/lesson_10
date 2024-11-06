@@ -3,11 +3,10 @@ using pack1;
 
 class Cow : Animal
 {
-    private int _amountMilk = 0;
 
     public override void NewDay(out bool isDead)
     {
-        _amountMilk = GetMilk();
+        _amount = GetMilk();
         base.NewDay(out isDead);
     }
 
@@ -23,10 +22,4 @@ class Cow : Animal
         return 0;
     }
 
-    public int CollectMilk()
-    {
-        int res = _amountMilk;
-        _amountMilk = 0;
-        return res;
-    }
 }

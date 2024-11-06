@@ -16,10 +16,11 @@ namespace lesson_10
         StrongHunger
     }
 
-    internal class Animal
+    internal abstract class Animal
     {
         public bool IsAlive { get;  set; } = true;
-        private protected HungerLevel _hunger = HungerLevel.Feedup;
+        protected HungerLevel _hunger = HungerLevel.Feedup;
+        protected int _amount = 0;
 
         public void Feedup()
         {
@@ -41,6 +42,13 @@ namespace lesson_10
         {
             HungerCalc();
             isDead = !IsAlive;
+        }
+
+        public int CollectHarvest()
+        {
+            var res = _amount;
+            _amount = 0;
+            return res;
         }
     }
 
