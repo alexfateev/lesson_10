@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using System.Threading.Channels;
 using lesson_10;
 class Farm
 {
@@ -23,6 +24,12 @@ class Farm
 
     private int day = 1;
 
+
+    void DisplayMessage(string message)
+    {
+        Console.WriteLine(message);
+        Console.ReadKey();
+    }
     private void BuyFeed(out string message)
     {
         if (money >= feedCost)
@@ -41,7 +48,7 @@ class Farm
             if (chikens.Count < maxChickens)
             {
                 money -= chickenCost;
-                chikens.Add(new Chicken());
+                chikens.Add(new Chicken(DisplayMessage));
                 message = "Куплена новая курочка";
             }
             else message = "На вашей ферме нет мест для новых курочек";
@@ -56,7 +63,7 @@ class Farm
             if (cows.Count < maxCows)
             {
                 money -= cowCost;
-                cows.Add(new Cow());
+                cows.Add(new Cow(DisplayMessage));
                 message = "Куплена новая коровка";
             }
             else message = "На вашей ферме нет места для новых коровок";

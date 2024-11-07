@@ -3,6 +3,9 @@ using pack1;
 
 class Cow : Animal
 {
+    public Cow(AccountHandler ev) : base(ev)
+    {
+    }
 
     public override void NewDay(out bool isDead)
     {

@@ -21,6 +21,12 @@ namespace lesson_10
         public bool IsAlive { get;  set; } = true;
         protected HungerLevel _hunger = HungerLevel.Feedup;
         protected int _amount = 0;
+        public delegate void AccountHandler(string message);
+        public event AccountHandler Notify;
+
+        public Animal(AccountHandler ev){
+            Notify = ev;
+        }
 
         public void Feedup()
         {
@@ -34,7 +40,7 @@ namespace lesson_10
                 case HungerLevel.Feedup: _hunger = HungerLevel.LightHunger; break;
                 case HungerLevel.LightHunger: _hunger = HungerLevel.MiddleHunger; break;
                 case HungerLevel.MiddleHunger: _hunger = HungerLevel.StrongHunger; break;
-                case HungerLevel.StrongHunger: IsAlive = false; break;
+                case HungerLevel.StrongHunger: IsAlive = false; Notify?.Invoke("Животное умерло"); break;
             }
         }
 

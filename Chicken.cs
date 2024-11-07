@@ -2,6 +2,10 @@
 
 class Chicken : Animal
 {
+    public Chicken(AccountHandler ev) : base(ev)
+    {
+    }
+
     public override void NewDay(out bool isDead)
     {
         _amount = GetEgg();
