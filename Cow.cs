@@ -7,14 +7,10 @@ class Cow : Animal
     {
     }
 
-    public override void NewDay(out bool isDead)
+    public override int CollectHarvest()
     {
-        _amount = GetMilk();
-        base.NewDay(out isDead);
-    }
-
-    private int GetMilk()
-    {
+        if (_harvestToday) return 0; //Если сегодня собирали урожай
+        _harvestToday = true;
         Random rand = new Random();
         switch (_hunger)
         {

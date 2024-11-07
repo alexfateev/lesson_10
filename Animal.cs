@@ -20,9 +20,10 @@ namespace lesson_10
     {
         public bool IsAlive { get;  set; } = true;
         protected HungerLevel _hunger = HungerLevel.Feedup;
-        protected int _amount = 0;
         public delegate void AccountHandler(string message);
         public event AccountHandler Notify;
+        protected bool _harvestToday = false; // Признак того что сегодня собирали урожай
+
 
         public Animal(AccountHandler ev){
             Notify = ev;
@@ -46,16 +47,12 @@ namespace lesson_10
 
         public virtual void NewDay(out bool isDead)
         {
+            CollectHarvest();
             HungerCalc();
             isDead = !IsAlive;
         }
 
-        public int CollectHarvest()
-        {
-            var res = _amount;
-            _amount = 0;
-            return res;
-        }
+        public abstract int CollectHarvest();
     }
 
 
