@@ -25,9 +25,7 @@ namespace lesson_10
         protected bool _harvestToday = false; // Признак того что сегодня собирали урожай
 
 
-        public Animal(AccountHandler ev){
-            Notify = ev;
-        }
+
 
         public void Feedup()
         {

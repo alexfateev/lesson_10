@@ -5,9 +5,6 @@ class Chicken : Animal
 {
 
     private int _amountEgg = 0;
-    public Chicken(AccountHandler ev) : base(ev)
-    {
-    }
 
 
     private int CalcEggChance()

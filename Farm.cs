@@ -24,9 +24,12 @@ class Farm
 
     private int day = 1;
 
-    private IMessage _combineMessage = new CombineMessage(new ConsoleMessage(), new FileMessage());
-    private IMessage _menuText = new ConsoleMessage();
+    private IMessage CombineMessage { get; set; }
 
+    public Farm(IMessage message)
+    {
+        CombineMessage = message;
+    }
 
     private void BuyFeed(out string message)
     {
@@ -46,7 +49,9 @@ class Farm
             if (chikens.Count < maxChickens)
             {
                 money -= chickenCost;
-                chikens.Add(new Chicken(_combineMessage.Message));
+                Chicken chicken = new Chicken();
+                chicken.Notify += CombineMessage.Message;
+                chikens.Add(chicken);
                 message = "Куплена новая курочка";
             }
             else message = "На вашей ферме нет мест для новых курочек";
@@ -61,7 +66,9 @@ class Farm
             if (cows.Count < maxCows)
             {
                 money -= cowCost;
-                cows.Add(new Cow(_combineMessage.Message));
+                Cow cow = new Cow();
+                cow.Notify += CombineMessage.Message;
+                cows.Add(cow);
                 message = "Куплена новая коровка";
             }
             else message = "На вашей ферме нет места для новых коровок";
@@ -151,7 +158,7 @@ class Farm
 
     private void ShowStatusFarm()
     {
-        _menuText.Message(new string[] {
+        CombineMessage.Message(new string[] {
             $"День: {day}" ,
             $"Денег: {money}",
             $"Запас корма: {feedSupply}",
@@ -171,7 +178,7 @@ class Farm
             Console.Clear();
             ShowStatusFarm();
 
-            _menuText.Message(new string[]
+            CombineMessage.Message(new string[]
             {
                 $"1. Купить корм. {feedCost} монет за {feedBuyPart} ед.",
                 $"4. Покормить всех",
@@ -185,11 +192,11 @@ class Farm
 
             if (!message.Equals(""))
             {
-                _combineMessage.Message(message);
+                CombineMessage.Message(message);
                 message = "";
             }
 
-            _combineMessage.Message("Выберите действие: ");
+            CombineMessage.Message("Выберите действие: ");
 
             var res = int.TryParse(Console.ReadLine(), out int number);
             if (!res) continue;
