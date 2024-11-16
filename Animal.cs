@@ -45,9 +45,13 @@ namespace lesson_10
             }
         }
 
-        public virtual void NewDay(out bool isDead)
+        public virtual void NewDay()
         {
-            CollectHarvest();
+            _harvestToday = false;
+        }
+
+        public virtual void EndDay(out bool isDead)
+        {
             HungerCalc();
             isDead = !IsAlive;
         }

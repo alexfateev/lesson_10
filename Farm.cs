@@ -24,12 +24,10 @@ class Farm
 
     private int day = 1;
 
+    private IMessage _combineMessage = new CombineMessage(new ConsoleMessage(), new FileMessage());
+    private IMessage _menuText = new ConsoleMessage();
 
-    void DisplayMessage(string message)
-    {
-        Console.WriteLine(message);
-        Console.ReadKey();
-    }
+
     private void BuyFeed(out string message)
     {
         if (money >= feedCost)
@@ -48,7 +46,7 @@ class Farm
             if (chikens.Count < maxChickens)
             {
                 money -= chickenCost;
-                chikens.Add(new Chicken(DisplayMessage));
+                chikens.Add(new Chicken(_combineMessage.Message));
                 message = "Куплена новая курочка";
             }
             else message = "На вашей ферме нет мест для новых курочек";
@@ -63,7 +61,7 @@ class Farm
             if (cows.Count < maxCows)
             {
                 money -= cowCost;
-                cows.Add(new Cow(DisplayMessage));
+                cows.Add(new Cow(_combineMessage.Message));
                 message = "Куплена новая коровка";
             }
             else message = "На вашей ферме нет места для новых коровок";
@@ -71,54 +69,17 @@ class Farm
         else message = "Недостаточно денег";
     }
 
-    //private void FeedupChickens(out string message)
-    //{
-    //    message = "Нет курочек которых можно покормить";
-    //    foreach (Chicken chicken in chikens)
-    //    {
-    //        if (chicken.IsAlive && feedSupply > 0)
-    //        {
-    //            chicken.Feedup();
-    //            feedSupply--;
-    //        }
-    //        else
-    //        {
-    //            message = "Закончился корм. Кто-то из курочек будет голодать";
-    //            return;
-    //        }
-    //        message = "Все курочки накормлены";
-    //    }
-    //}
-
-    //private void FeedupCows(out string message)
-    //{
-    //    message = "Нет коровок которых можно покормить";
-    //    foreach (Cow cow in cows)
-    //    {
-    //        if (cow.IsAlive && feedSupply > 0)
-    //        {
-    //            cow.Feedup();
-    //            feedSupply--;
-    //        }
-    //        else
-    //        {
-    //            message = "Закончился корм. Кто-то из коровок будет голодать";
-    //            return;
-    //        }
-    //        message = "Все коровки накормлены";
-    //    }
-    //}
-
     private void FeedupAnimal(List<Animal> list, out string message)
     {
         message = "Некого кормить";
         foreach (Animal animal in list)
         {
-            if(animal.IsAlive && feedSupply > 0)
+            if (animal.IsAlive && feedSupply > 0)
             {
                 animal.Feedup();
                 feedSupply--;
-            } else
+            }
+            else
             {
                 message = "Закончился корм. Кто-то из животных будет голодать";
             }
@@ -132,9 +93,6 @@ class Farm
 
         FeedupAnimal(chikens, out string chickenMessage);
         FeedupAnimal(cows, out string cowMessage);
-
-        //FeedupChickens(out string chickenMessage);
-        //FeedupCows(out string cowMessage);
 
         bs.AppendLine(chickenMessage);
         bs.AppendLine(cowMessage);
@@ -167,20 +125,22 @@ class Farm
         milkSupply = 0;
     }
 
-    private void NewDay(out string message)
+    private void EndDay(out string message)
     {
         day++;
         List<Chicken> deadChickens = new List<Chicken>();
         List<Cow> deadCows = new List<Cow>();
         foreach (Chicken chicken in chikens)
         {
-            chicken.NewDay(out bool isDead);
+            chicken.EndDay(out bool isDead);
             if (isDead) deadChickens.Add(chicken);
+            chicken.NewDay();
         }
         foreach (Cow cow in cows)
         {
-            cow.NewDay(out bool isDead);
+            cow.EndDay(out bool isDead);
             if (isDead) deadCows.Add(cow);
+            cow.NewDay();
         }
         if (deadCows.Count == 0 && deadChickens.Count == 0) message = "";
         else message = $"От голода умерло Курочек: {deadChickens.Count} \t  Коровок: {deadCows.Count}";
@@ -191,16 +151,16 @@ class Farm
 
     private void ShowStatusFarm()
     {
-        Console.WriteLine($"День: {day}");
-        Console.WriteLine($"Денег: {money}");
-        Console.WriteLine($"Запас корма: {feedSupply}");
-        Console.WriteLine($"Собрано яиц: {eggSupply}");
-        Console.WriteLine($"Собрано молока: {milkSupply}");
-        Console.WriteLine($"Курочек: {chikens.Count}\nКоровок: {cows.Count}");
-        Console.WriteLine("------------------------------------------------------------------------");
+        _menuText.Message(new string[] {
+            $"День: {day}" ,
+            $"Денег: {money}",
+            $"Запас корма: {feedSupply}",
+            $"Собрано яиц: {eggSupply}",
+            $"Собрано молока: {milkSupply}",
+            $"Курочек: {chikens.Count}\nКоровок: {cows.Count}",
+            "------------------------------------------------------------------------"
+        });
     }
-
-
 
 
     public void ShowMenu()
@@ -211,33 +171,37 @@ class Farm
             Console.Clear();
             ShowStatusFarm();
 
-            Console.WriteLine($"1. Купить корм. {feedCost} монет за {feedBuyPart} ед.");
-            //Console.WriteLine($"2. Покормить курочек");
-            //Console.WriteLine($"3. Покормить коровок");
-            Console.WriteLine($"4. Покормить всех");
-            Console.WriteLine($"5. Собрать урожай");
-            Console.WriteLine($"6. Продать урожай");
-            Console.WriteLine($"7. Купить курочку ({chickenCost}) монет");
-            Console.WriteLine($"8. Купить коровку ({cowCost}) монет");
-            Console.WriteLine($"9. Закончить день");
+            _menuText.Message(new string[]
+            {
+                $"1. Купить корм. {feedCost} монет за {feedBuyPart} ед.",
+                $"4. Покормить всех",
+                $"5. Собрать урожай",
+                $"6. Продать урожай",
+                $"7. Купить курочку ({chickenCost}) монет",
+                $"8. Купить коровку ({cowCost}) монет",
+                $"9. Закончить день"
+            });
 
-            if (!message.Equals("")) { Console.WriteLine(message); message = ""; }
 
-            Console.Write("Выберите действие: ");
+            if (!message.Equals(""))
+            {
+                _combineMessage.Message(message);
+                message = "";
+            }
+
+            _combineMessage.Message("Выберите действие: ");
 
             var res = int.TryParse(Console.ReadLine(), out int number);
             if (!res) continue;
             switch (number)
             {
                 case 1: BuyFeed(out message); break;
-                //case 2: FeedupChickens(out message); break;
-                //case 3: FeedupCows(out message); break;
                 case 4: FeedupAll(out message); break;
                 case 5: Harvest(out message); break;
                 case 6: SellHarvest(out message); break;
                 case 7: BuyChicken(out message); break;
                 case 8: BuyCow(out message); break;
-                case 9: NewDay(out message); break;
+                case 9: EndDay(out message); break;
             }
         }
     }
